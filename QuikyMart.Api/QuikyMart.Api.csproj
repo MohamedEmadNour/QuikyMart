@@ -18,8 +18,4 @@
     <ProjectReference Include="..\QuikyMart.Service\QuikyMart.Service.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-
 </Project>
