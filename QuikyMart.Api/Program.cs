@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using QuikyMart.Api.Helper;
 using QuikyMart.Data.DB.Context;
 
 namespace QuikyMart.Api
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +23,10 @@ namespace QuikyMart.Api
                 option.UseSqlServer(builder.Configuration.GetConnectionString("DefualtConnection"));
             });
 
+
             var app = builder.Build();
+
+            await ApplySeedIngData.ApplySeeingDataAsync(app);
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

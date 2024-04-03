@@ -19,7 +19,7 @@ namespace QuikyMart.Repositores
             {
                 if (context.ProductTypes != null && !context.ProductTypes.Any())
                 {
-                    var types = File.ReadAllText("../QuikyMart.Repositores/SeedData/types");
+                    var types = File.ReadAllText("../QuikyMart.Repositores/SeedData/types.json");
 
                     var typesSirlized = JsonSerializer.Deserialize<List<ProductType>>(types);
 
@@ -27,7 +27,7 @@ namespace QuikyMart.Repositores
                 }
                 if (context.ProductBrands != null && !context.ProductBrands.Any())
                 {
-                    var Brands = File.ReadAllText("../QuikyMart.Repositores/SeedData/brands");
+                    var Brands = File.ReadAllText("../QuikyMart.Repositores/SeedData/brands.json");
 
                     var BrandsSirlized = JsonSerializer.Deserialize<List<ProductBrand>>(Brands);
 
@@ -35,9 +35,9 @@ namespace QuikyMart.Repositores
                 }
                 if (context.Products != null && !context.Products.Any())
                 {
-                    var Products = File.ReadAllText("../QuikyMart.Repositores/SeedData/products");
+                    var Products = File.ReadAllText("../QuikyMart.Repositores/SeedData/products.json");
 
-                    var ProductsSirlized = JsonSerializer.Deserialize<List<ProductBrand>>(Products);
+                    var ProductsSirlized = JsonSerializer.Deserialize<List<Product>>(Products);
 
                     await context.AddRangeAsync(ProductsSirlized);
                 }
