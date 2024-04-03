@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QuikyMart.Data.DB.Context;
-using QuikyMart.Repositores;
+using QuikyMart.Repositories;
 
 namespace QuikyMart.Api.Helper
 {

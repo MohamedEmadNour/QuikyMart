@@ -8,7 +8,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace QuikyMart.Repositores
+namespace QuikyMart.Repositories
 {
     public class SeedIngData
     {
