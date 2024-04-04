@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace QuikyMart.Repositores.Repositories
 {
-    public class GenericRepositories<T> : IGenericRepositories<T> where T : BaseEntity
+    public class GenericRepositories<T , TKey> : IGenericRepositories<T , TKey> where T : BaseEntity<TKey>
     {
         private readonly QuikyMartDBContext _context;
 
@@ -21,10 +21,28 @@ namespace QuikyMart.Repositores.Repositories
 
 
         public async Task<IEnumerable<T>> GetAllAsync()
-            => await _context.Set<T>().ToListAsync();
+        {
+            if (typeof(T) == typeof(Product))
+            {
+                return (IEnumerable<T>) await _context.Set<Product>().Include(P=> P.Brand)
+                                                      .Include(P=>P.Type).ToListAsync();
+            }
+            return await _context.Set<T>().ToListAsync();
+        }
+        public async Task<T> GetByIdAsync(TKey id)
+        {
+            if (typeof(T) == typeof(Product))
+            {
+                return (T)(object)await _context.Set<Product>()
+                    .Include(p => p.Brand)
+                    .Include(p => p.Type)
+                    .FirstOrDefaultAsync(e => e.Id.Equals(id));
+            }
+            return await _context.Set<T>().FindAsync(id);
+        }
 
-        public async Task<T> GetByIdAsync(int? id)
-            => await _context.Set<T>().FindAsync(id);
+
+
         public async Task AddAsync(T entity)
             => await _context.Set<T>().AddAsync(entity);
 
@@ -33,6 +51,7 @@ namespace QuikyMart.Repositores.Repositories
             => _context.Set<T>().Update(entity);
         public void Delete(T entity)
             => _context.Set<T>().Remove(entity);
+
 
     }
 }

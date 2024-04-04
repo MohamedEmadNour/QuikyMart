@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace QuikyMart.Data.Entites
 {
-    public class ProductBrand : BaseEntity
+    public class ProductBrand : BaseEntity<int>
     {
         public string Name { get; set; }
 

@@ -22,25 +22,25 @@ namespace QuikyMart.Repositores.Repositories
         }
         public async Task<int> CompleteAsync()
             => await _context.SaveChangesAsync();
-        
 
-        public IGenericRepositories<T> repositories<T>() where T : BaseEntity
+
+        public IGenericRepositories<T, TKey> repositories<T, TKey>() where T : BaseEntity<TKey>
         {
             if (_Repositorie == null)
                 _Repositorie = new Hashtable();
 
             var EntityName = typeof(T).Name;
 
-            if (_Repositorie.ContainsKey(EntityName))
+            if (!_Repositorie.ContainsKey(EntityName))
             {
-                var RepositoriesType = typeof(IGenericRepositories<T>);
-
-                var RepositoriesInstance = Activator.CreateInstance(RepositoriesType.MakeGenericType(typeof(T)) , _context );
-
+                var RepositoriesType = typeof(GenericRepositories<,>);
+                var RepositoriesInstance = Activator.CreateInstance(RepositoriesType.MakeGenericType(typeof(T), typeof(TKey)), _context);
                 _Repositorie.Add(EntityName, RepositoriesInstance);
-
             }
-            return (IGenericRepositories<T>) _Repositorie[EntityName];
+            return (IGenericRepositories<T, TKey>)_Repositorie[EntityName];
         }
+
+
+
     }
 }

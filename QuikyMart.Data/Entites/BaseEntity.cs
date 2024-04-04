@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace QuikyMart.Data.Entites
 {
-    public class BaseEntity
+    public class BaseEntity<T>
     {
-        public int Id { get; set; }
+        public T Id { get; set; }
 
         public DateTime CreatedTime { get; set; } = DateTime.Now;
     }

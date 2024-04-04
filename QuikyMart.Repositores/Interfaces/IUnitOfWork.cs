@@ -10,7 +10,7 @@ namespace QuikyMart.Repositores.Interfaces
 {
     public interface IUnitOfWork 
     {
-        IGenericRepositories<T> repositories<T>() where T : BaseEntity;
+        IGenericRepositories<T,TKey> repositories<T , TKey>() where T : BaseEntity<TKey>;
 
         Task<int> CompleteAsync();
     }

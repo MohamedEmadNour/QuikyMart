@@ -7,16 +7,12 @@ using System.Threading.Tasks;
 
 namespace QuikyMart.Repositories.Interfaces
 {
-    public interface IGenericRepositories<T> where T : BaseEntity
+    public interface IGenericRepositories<T, TKey> where T : BaseEntity<TKey>
     {
-        Task<T> GetByIdAsync(int? id);
-
+        Task<T> GetByIdAsync(TKey id);
         Task<IEnumerable<T>> GetAllAsync();
-
         Task AddAsync(T entity);
         void Update(T entity);
         void Delete(T entity);
-
-
     }
 }

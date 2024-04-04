@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using QuikyMart.Api.Helper;
 using QuikyMart.Data.DB.Context;
+using QuikyMart.Repositores.Interfaces;
+using QuikyMart.Repositores.Repositories;
+using QuikyMart.Repositories.Interfaces;
 
 namespace QuikyMart.Api
 {
@@ -16,6 +19,9 @@ namespace QuikyMart.Api
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            //builder.Services.AddScoped(typeof(IGenericRepositories<,>), typeof(GenericRepositories<,>));
+
 
 
             builder.Services.AddDbContext<QuikyMartDBContext>(option =>
