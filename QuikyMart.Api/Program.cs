@@ -29,6 +29,9 @@ namespace QuikyMart.Api
                 option.UseSqlServer(builder.Configuration.GetConnectionString("DefualtConnection"));
             });
 
+            //builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfile()));
+            builder.Services.AddAutoMapper(typeof(MappingProfile));
+
 
             var app = builder.Build();
 

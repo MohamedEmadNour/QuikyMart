@@ -1,4 +1,5 @@
 ﻿using QuikyMart.Data.Entites;
+using QuikyMart.Repositores.Specifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,8 @@ namespace QuikyMart.Repositories.Interfaces
         Task AddAsync(T entity);
         void Update(T entity);
         void Delete(T entity);
+
+        Task<T> GetByIdWithSpecificatioAsync(ISpecification<T> specs);
+        Task<IEnumerable<T>> GetAllWithSpecificatioAsync(ISpecification<T> specs);
     }
 }

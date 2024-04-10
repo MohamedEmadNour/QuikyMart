@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QuikyMart.Data.DB.Context;
 using QuikyMart.Data.Entites;
+using QuikyMart.Repositores.Specifications;
 using QuikyMart.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -52,6 +53,14 @@ namespace QuikyMart.Repositores.Repositories
         public void Delete(T entity)
             => _context.Set<T>().Remove(entity);
 
+        public async Task<T> GetByIdWithSpecificatioAsync(ISpecification<T> specs)
+        {
+            return await SpecificationEvaluator<T , TKey>.GetQuery(_context.Set<T>() , specs).FirstOrDefaultAsync();
+        }
 
+        public async Task<IEnumerable<T>> GetAllWithSpecificatioAsync(ISpecification<T> specs)
+        {
+            return await SpecificationEvaluator<T, TKey>.GetQuery(_context.Set<T>(), specs).ToListAsync();
+        }
     }
 }
