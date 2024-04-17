@@ -18,6 +18,33 @@ namespace QuikyMart.Repositores.Specifications.ProductSpecificationsProfile
         {
             AddIncludes(P => P.Brand);
             AddIncludes(P => P.Type);
+            Ordering(P => P.Name);
+
+            if (Specs.Sort is not null)
+            {
+                switch (Specs.Sort)
+                {
+                    case ProductSortCasses.Name:
+                        Ordering(P => P.Name);
+                        break;
+                    case ProductSortCasses.NameDesc:
+                        OrderingDesc(P => P.Name);
+                        break;
+                    case ProductSortCasses.Price:
+                        Ordering(P => P.Price);
+                        break;
+                    case ProductSortCasses.PriceDesc:
+                        OrderingDesc(P => P.Price);
+                        break;
+
+                    default:
+                        Ordering(P => P.Name);
+                        break;
+                }
+
+            }
+
+
         }
 
         public ProductWithSpecification(int id) : base (product => product.Id == id)

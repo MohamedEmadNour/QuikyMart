@@ -15,7 +15,13 @@ namespace QuikyMart.Repositores.Specifications
             var Query = InputQuery;
 
             if (Specs.Criteria != null)
-                Query.Where(Specs.Criteria);
+                Query = Query.Where(Specs.Criteria);
+
+            if (Specs.OrderBy != null)
+                Query = Query.OrderBy(Specs.OrderBy);
+
+            if (Specs.OrderByDesc != null)
+                Query = Query.OrderByDescending(Specs.OrderByDesc);
 
             Query = Specs.Includes.Aggregate(Query, (Current, input) => Current.Include(input));
 

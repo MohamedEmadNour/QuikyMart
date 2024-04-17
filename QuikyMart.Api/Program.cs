@@ -1,9 +1,6 @@
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Builder;
 using QuikyMart.Api.Helper;
-using QuikyMart.Data.DB.Context;
-using QuikyMart.Repositores.Interfaces;
-using QuikyMart.Repositores.Repositories;
-using QuikyMart.Repositories.Interfaces;
+using QuikyMart.Api.Middleware;
 
 namespace QuikyMart.Api
 {
@@ -13,25 +10,7 @@ namespace QuikyMart.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            //builder.Services.AddScoped(typeof(IGenericRepositories<,>), typeof(GenericRepositories<,>));
-
-
-
-            builder.Services.AddDbContext<QuikyMartDBContext>(option =>
-            {
-                option.UseSqlServer(builder.Configuration.GetConnectionString("DefualtConnection"));
-            });
-
-            //builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfile()));
-            builder.Services.AddAutoMapper(typeof(MappingProfile));
-
+            ServiceMainHandling.ApplyServiceMainHandling(builder);
 
             var app = builder.Build();
 
@@ -43,6 +22,10 @@ namespace QuikyMart.Api
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
+
+            app.UseMiddleware<ServiceApiMiddleware>();
 
             app.UseHttpsRedirection();
 

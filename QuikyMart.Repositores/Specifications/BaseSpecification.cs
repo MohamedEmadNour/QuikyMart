@@ -19,7 +19,17 @@ namespace QuikyMart.Repositores.Specifications
 
         public List<Expression<Func<TEntity, object>>> Includes { get; } = new List<Expression<Func<TEntity, object>>>();
 
+        public Expression<Func<TEntity, object>> OrderBy { get; protected set; }
+
+        public Expression<Func<TEntity, object>> OrderByDesc { get; protected set; }
+
         protected void AddIncludes(Expression<Func<TEntity, object>> includeExpression)
             => Includes.Add(includeExpression);
+
+        protected void Ordering(Expression<Func<TEntity, object>> orderBy)
+            => OrderBy = orderBy;
+
+        protected void OrderingDesc(Expression<Func<TEntity, object>> orderByDesc)
+            => OrderByDesc = orderByDesc;
     }
 }

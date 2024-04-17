@@ -6,6 +6,7 @@ using QuikyMart.Repositores.Interfaces;
 using QuikyMart.Repositores.Specifications.ProductSpecificationsProfile;
 using QuikyMart.Repositories.Interfaces;
 using QuikyMart.Service.Dtos;
+using QuikyMart.Service.ExceptionsHandeling;
 
 namespace QuikyMart.Api.Controllers
 {
@@ -36,12 +37,17 @@ namespace QuikyMart.Api.Controllers
             return Ok(ProductMapping);
         }
 
-        [HttpGet("id")]
+        [ProducesResponseType(typeof(ProductDTO), statusCode:200)]
+        [ProducesResponseType(typeof(ProductDTO), statusCode:404)]
+        [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProductById(int id)
         {
             var spec = new ProductWithSpecification(id);
 
+
             var product = await _unitOfWork.repositories<Product, int>().GetByIdWithSpecificatioAsync(spec);
+            if (product is null)
+                return NotFound(new ApiResponse(404));
             var ProductMapping = _mapper.Map<Product, ProductDTO>(product);
 
             return Ok(ProductMapping);

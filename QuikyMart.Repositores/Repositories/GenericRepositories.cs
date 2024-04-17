@@ -55,7 +55,7 @@ namespace QuikyMart.Repositores.Repositories
 
         public async Task<T> GetByIdWithSpecificatioAsync(ISpecification<T> specs)
         {
-            return await SpecificationEvaluator<T , TKey>.GetQuery(_context.Set<T>() , specs).FirstOrDefaultAsync();
+            return await SpecificationEvaluator<T , TKey>.GetQuery(_context.Set<T>(), specs).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<T>> GetAllWithSpecificatioAsync(ISpecification<T> specs)

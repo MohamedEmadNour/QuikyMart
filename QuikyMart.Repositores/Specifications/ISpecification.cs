@@ -12,5 +12,8 @@ namespace QuikyMart.Repositores.Specifications
     {
         Expression<Func<TEntity, bool>> Criteria { get; }
         List<Expression<Func<TEntity, object>>> Includes { get; }
+        Expression<Func<TEntity, object>> OrderBy { get; }
+        Expression<Func<TEntity, object>> OrderByDesc { get; }
+
     }
 }
