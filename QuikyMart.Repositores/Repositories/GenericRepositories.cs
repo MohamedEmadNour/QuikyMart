@@ -21,11 +21,11 @@ namespace QuikyMart.Repositores.Repositories
         }
 
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IReadOnlyList<T>> GetAllAsync()
         {
             if (typeof(T) == typeof(Product))
             {
-                return (IEnumerable<T>) await _context.Set<Product>().Include(P=> P.Brand)
+                return (IReadOnlyList<T>) await _context.Set<Product>().Include(P=> P.Brand)
                                                       .Include(P=>P.Type).ToListAsync();
             }
             return await _context.Set<T>().ToListAsync();
@@ -58,9 +58,15 @@ namespace QuikyMart.Repositores.Repositories
             return await SpecificationEvaluator<T , TKey>.GetQuery(_context.Set<T>(), specs).FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAllWithSpecificatioAsync(ISpecification<T> specs)
+        public async Task<IReadOnlyList<T>> GetAllWithSpecificatioAsync(ISpecification<T> specs)
         {
             return await SpecificationEvaluator<T, TKey>.GetQuery(_context.Set<T>(), specs).ToListAsync();
         }
+
+        public async Task<int> GetCountSpecificatio(ISpecification<T> specs)
+        {
+            return SpecificationEvaluator<T, TKey>.GetQuery(_context.Set<T>(), specs).Count();
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using QuikyMart.Api.Helper;
 using QuikyMart.Data.Entites;
 using QuikyMart.Repositores.Interfaces;
 using QuikyMart.Repositores.Specifications.ProductSpecificationsProfile;
@@ -28,13 +29,16 @@ namespace QuikyMart.Api.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetAllProduct([FromQuery]ProductSpec input)
+        public async Task<ActionResult<IReadOnlyList<Product>>> GetAllProduct([FromQuery]ProductSpec input)
         {
             var spec = new ProductWithSpecification(input);
             //var products = await _unitOfWork.repositories<Product , int>().GetAllAsync();
             var products = await _unitOfWork.repositories<Product , int>().GetAllWithSpecificatioAsync(spec);
-            var ProductMapping = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDTO>>(products);
-            return Ok(ProductMapping);
+            var ProductMapping = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDTO>>(products);
+            var CountSpec = new ProductCountSpic(input);
+            int Count = await _unitOfWork.repositories<Product, int>().GetCountSpecificatio(CountSpec); 
+
+            return Ok(new Pagination<ProductDTO>(input.pageSize, input.pageIndex, Count, ProductMapping));
         }
 
         [ProducesResponseType(typeof(ProductDTO), statusCode:200)]
@@ -57,5 +61,5 @@ namespace QuikyMart.Api.Controllers
 
 
 
-    }
+    }   
 }

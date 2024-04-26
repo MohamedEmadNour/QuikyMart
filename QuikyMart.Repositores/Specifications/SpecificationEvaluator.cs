@@ -22,6 +22,10 @@ namespace QuikyMart.Repositores.Specifications
 
             if (Specs.OrderByDesc != null)
                 Query = Query.OrderByDescending(Specs.OrderByDesc);
+            if(Specs.IsPagination)
+                Query = Query.Skip(Specs.Skip).Take(Specs.Take);
+
+          
 
             Query = Specs.Includes.Aggregate(Query, (Current, input) => Current.Include(input));
 

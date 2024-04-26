@@ -22,6 +22,9 @@ namespace QuikyMart.Repositores.Specifications
         public Expression<Func<TEntity, object>> OrderBy { get; protected set; }
 
         public Expression<Func<TEntity, object>> OrderByDesc { get; protected set; }
+        public int Skip { get ; set; }
+        public int Take { get; set; }
+        public bool IsPagination { get; set; }
 
         protected void AddIncludes(Expression<Func<TEntity, object>> includeExpression)
             => Includes.Add(includeExpression);
@@ -31,5 +34,13 @@ namespace QuikyMart.Repositores.Specifications
 
         protected void OrderingDesc(Expression<Func<TEntity, object>> orderByDesc)
             => OrderByDesc = orderByDesc;
+
+        public void ApplyPaginatiom(int skip , int take)
+        {
+            Skip = skip;
+            Take = take;
+            IsPagination = true;
+        }
+
     }
 }

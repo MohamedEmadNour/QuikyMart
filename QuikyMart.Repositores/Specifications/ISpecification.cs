@@ -15,5 +15,9 @@ namespace QuikyMart.Repositores.Specifications
         Expression<Func<TEntity, object>> OrderBy { get; }
         Expression<Func<TEntity, object>> OrderByDesc { get; }
 
+        public int Skip { get; set; }
+        public int Take { get; set; }
+        public bool IsPagination { get; set; }
+
     }
 }

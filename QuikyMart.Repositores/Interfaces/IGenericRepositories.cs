@@ -11,12 +11,13 @@ namespace QuikyMart.Repositories.Interfaces
     public interface IGenericRepositories<T, TKey> where T : BaseEntity<TKey>
     {
         Task<T> GetByIdAsync(TKey id);
-        Task<IEnumerable<T>> GetAllAsync();
+        Task<IReadOnlyList<T>> GetAllAsync();
         Task AddAsync(T entity);
         void Update(T entity);
         void Delete(T entity);
 
         Task<T> GetByIdWithSpecificatioAsync(ISpecification<T> specs);
-        Task<IEnumerable<T>> GetAllWithSpecificatioAsync(ISpecification<T> specs);
+        Task<IReadOnlyList<T>> GetAllWithSpecificatioAsync(ISpecification<T> specs);
+        Task<int> GetCountSpecificatio(ISpecification<T> specs);
     }
 }

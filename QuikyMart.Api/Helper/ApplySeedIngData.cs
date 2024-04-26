@@ -1,5 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using QuikyMart.Data.DB.Context;
+using QuikyMart.Data.Entites.Accounting;
+using QuikyMart.Repositores;
 using QuikyMart.Repositories;
 
 namespace QuikyMart.Api.Helper
@@ -13,13 +16,20 @@ namespace QuikyMart.Api.Helper
                 var serviceProvider = scope.ServiceProvider;
 
                 var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
+
+                var UserManger = serviceProvider.GetRequiredService<UserManager<AppUser>>();
                 try
                 {
                     var context = serviceProvider.GetRequiredService<QuikyMartDBContext>();
+                    var Identity = serviceProvider.GetRequiredService<AppIdentityDbContext>();
 
                     await context.Database.MigrateAsync();
+                    await Identity.Database.MigrateAsync();
+
+
 
                     await SeedIngData.SeedingData(context , loggerFactory);
+                    await SeedingUsers.ApplyUsersSeeding(UserManger);
 
                 }
                 catch (Exception ex)

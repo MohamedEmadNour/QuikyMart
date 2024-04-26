@@ -13,7 +13,8 @@ namespace QuikyMart.Repositores.Specifications.ProductSpecificationsProfile
             : base
             (
                   product => ( !Specs.BrandId.HasValue || product.BrandId == Specs.BrandId.Value ) &&
-                             (!Specs.TypeId.HasValue || product.TypeId == Specs.TypeId.Value)
+                             (!Specs.TypeId.HasValue || product.TypeId == Specs.TypeId.Value)&&
+                             (string.IsNullOrEmpty(Specs.Search)|| product.Name.ToLower().Contains(Specs.Search))
             )       
         {
             AddIncludes(P => P.Brand);
@@ -41,6 +42,10 @@ namespace QuikyMart.Repositores.Specifications.ProductSpecificationsProfile
                         Ordering(P => P.Name);
                         break;
                 }
+
+            }
+            ApplyPaginatiom(Specs.pageSize * (Specs.pageIndex - 1), Specs.pageSize);
+            {
 
             }
 
