@@ -31,6 +31,8 @@ namespace QuikyMart.Api
 
             app.UseStaticFiles();
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
 
 

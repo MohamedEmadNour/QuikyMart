@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QuikyMart.Data.Entites;
 using QuikyMart.Repositores.Interfaces;
@@ -6,7 +7,7 @@ using QuikyMart.Service.ExceptionsHandeling;
 
 namespace QuikyMart.Api.Controllers
 {
-
+    [Authorize]
     public class BasketController : BaseCont
     {
         private readonly IBasketReopsitories _basketReopsitories;

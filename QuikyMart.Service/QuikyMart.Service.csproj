@@ -12,10 +12,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\QuikyMart.Repositores\QuikyMart.Repositores.csproj" />
-  </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ServicesPicUrl\" />
+
   </ItemGroup>
 
 </Project>

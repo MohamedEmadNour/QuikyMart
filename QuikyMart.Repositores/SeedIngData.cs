@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using QuikyMart.Data.DB.Context;
 using QuikyMart.Data.Entites;
+using QuikyMart.Data.Entites.Order;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +41,14 @@ namespace QuikyMart.Repositories
                     var ProductsSirlized = JsonSerializer.Deserialize<List<Product>>(Products);
 
                     await context.AddRangeAsync(ProductsSirlized);
+                }
+                if (context.DeliveryMethod != null && !context.DeliveryMethod.Any())
+                {
+                    var Delivery = File.ReadAllText("../QuikyMart.Repositores/SeedData/delivery.json");
+
+                    var DeliverySirlized = JsonSerializer.Deserialize<List<DeliveryMethod>>(Delivery);
+
+                    await context.AddRangeAsync(DeliverySirlized);
                 }
                 await context.SaveChangesAsync();
             }

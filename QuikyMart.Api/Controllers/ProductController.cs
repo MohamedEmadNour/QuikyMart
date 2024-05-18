@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QuikyMart.Api.Helper;
@@ -27,7 +29,7 @@ namespace QuikyMart.Api.Controllers
             _mapper = mapper;
         }
 
-
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<Product>>> GetAllProduct([FromQuery]ProductSpec input)
         {
@@ -41,6 +43,8 @@ namespace QuikyMart.Api.Controllers
             return Ok(new Pagination<ProductDTO>(input.pageSize, input.pageIndex, Count, ProductMapping));
         }
 
+
+        [Authorize]
         [ProducesResponseType(typeof(ProductDTO), statusCode:200)]
         [ProducesResponseType(typeof(ProductDTO), statusCode:404)]
         [HttpGet("{id}")]

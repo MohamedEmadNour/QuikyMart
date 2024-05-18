@@ -25,8 +25,20 @@ namespace QuikyMart.Service.Dtos
         [Phone]
         public string PhoneNumber { get; set; }
         [Required]
-        [RegularExpression("^\\d{3}[A-Z]{3}\\d{3}$\r\n" , 
-            ErrorMessage = "Password Must Be 6 Char Like 123AAA123")]
+        [RegularExpression(@"^(?=.*\d{3})(?=.*[A-Za-z]{3}).{6,}$", 
+            ErrorMessage = "Password Must Be 6 Char Like 1234*AAaa*1234")]
+        public string Password { get; set; }
+    }
+
+    public class UserLoginDTO
+    {
+
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
+
+
+        [Required]
         public string Password { get; set; }
     }
 }

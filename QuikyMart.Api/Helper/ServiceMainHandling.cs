@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuikyMart.Data.DB.Context;
@@ -7,7 +8,11 @@ using QuikyMart.Data.Entites.Accounting;
 using QuikyMart.Repositores.Interfaces;
 using QuikyMart.Repositores.Repositories;
 using QuikyMart.Service.ExceptionsHandeling;
+using QuikyMart.Service.ServicesJWT;
 using StackExchange.Redis;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using QuikyMart.Service.OrderServices;
 
 namespace QuikyMart.Api.Helper
 {
@@ -22,14 +27,15 @@ namespace QuikyMart.Api.Helper
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IOrderServices, OrderServices>();
             builder.Services.AddScoped<IBasketReopsitories, BasketReopsitories>();
             //builder.Services.AddScoped(typeof(IGenericRepositories<,>), typeof(GenericRepositories<,>));
             builder.Services.AddHttpContextAccessor();
-            builder.Services.AddScoped<GenerationCode>();
+            builder.Services.AddScoped<ITokenService , TokenService>();
             builder.Services.AddIdentity<AppUser , IdentityRole>( O =>
             {
-                O.Password.RequireDigit = true;
-                O.Password.RequiredLength = 6;
+                //O.Password.RequireDigit = true;
+                //O.Password.RequiredLength = 6;
 
             } ).AddEntityFrameworkStores<AppIdentityDbContext>();
 
@@ -40,7 +46,7 @@ namespace QuikyMart.Api.Helper
             }); 
             
             builder.Services.AddDbContext<AppIdentityDbContext>(option =>
-            {
+            { 
                 option.UseSqlServer(builder.Configuration.GetConnectionString("AppUserConnection"));
             });
 
@@ -52,6 +58,28 @@ namespace QuikyMart.Api.Helper
                 }
 
             );
+
+            builder.Services.AddAuthentication(
+
+                Op =>
+                {
+                    Op.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    Op.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                }
+
+                ).AddJwtBearer(
+                
+                    O => O.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = builder.Configuration["JWT:ValidationIssuer"],
+                        ValidateAudience = true,
+                        ValidAudience = builder.Configuration["JWT:Validationaudience"],
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey =  true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
+                }
+                );
 
 
 
